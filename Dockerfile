@@ -18,5 +18,5 @@ RUN apt-get autoremove -y
 RUN rm -rf /var/lib/apt/lists/*
 
 ENV PATH=$PATH:/root/.dotnet/tools
-RUN dotnet tool install -g --version 3.1 dotnet-ef
-RUN dotnet tool install -g --version 4.3 amazon.lambda.tools
+RUN dotnet tool install -g dotnet-ef
+RUN dotnet tool install -g amazon.lambda.tools
