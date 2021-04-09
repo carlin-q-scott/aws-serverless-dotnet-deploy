@@ -1,22 +1,21 @@
-FROM mcr.microsoft.com/dotnet/sdk:3.1
-
-RUN apt-get -o Acquire::Max-FutureTime=86400 update
-RUN apt-get install -y apt-utils
-RUN apt-get install -y build-essential
-RUN apt-get remove -y python
-RUN apt-get -y autoremove
-ENV LANG="en_US.UTF-8" LC_COLLATE="en_US.UTF-8"
-RUN apt-get install -y python3-pip python3-setuptools
+FROM amazon/aws-sam-cli-build-image-python3.8
 
 RUN pip3 install aws-sam-cli --upgrade
 RUN pip3 install awscli --upgrade
+RUN pip3 install aws-lambda-builders --upgrade
 
-RUN apt-get install -y zip jq
-
-RUN apt-get remove -y build-essential apt-utils
-RUN apt-get autoremove -y
-RUN rm -rf /var/lib/apt/lists/*
-
-ENV PATH=$PATH:/root/.dotnet/tools
-RUN dotnet tool install -g --version 3.1 dotnet-ef
-RUN dotnet tool install -g --version 4.3 amazon.lambda.tools
+# Run: docker run --rm --entrypoint dotnet lambci/lambda:dotnetcore3.1 --info
+# Check https://dotnet.microsoft.com/download/dotnet-core/3.1 for versions
+ENV DOTNET_ROOT=/var/lang/bin
+ENV PATH=/root/.dotnet/tools:$DOTNET_ROOT:$PATH \
+    LD_LIBRARY_PATH=/var/lang/lib:$LD_LIBRARY_PATH \
+    AWS_EXECUTION_ENV=AWS_Lambda_dotnetcore3.1 \
+    DOTNET_SDK_VERSION=3.1.407 \
+    DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+    NUGET_XMLDOC_MODE=skip
+RUN curl -L https://dot.net/v1/dotnet-install.sh | bash -s -- -v $DOTNET_SDK_VERSION -i $DOTNET_ROOT && \
+  mkdir /tmp/warmup && \
+  cd /tmp/warmup && \
+  dotnet new && \
+  cd / && \
+  rm -rf /tmp/warmup /tmp/NuGetScratch /tmp/.dotnet
