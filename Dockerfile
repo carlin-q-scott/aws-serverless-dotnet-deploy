@@ -13,4 +13,4 @@ RUN yum install -y zip jq
 
 ENV PATH=$PATH:/root/.dotnet/tools
 RUN dotnet tool install -g dotnet-ef
-RUN dotnet tool install --global Amazon.Lambda.Tools --version 5.1.0
+RUN dotnet tool install --global Amazon.Lambda.Tools
