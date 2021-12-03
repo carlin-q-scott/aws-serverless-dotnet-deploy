@@ -29,7 +29,16 @@ docker run -it --name amazon -v $env:USERPROFILE/.aws:/root/.aws -v $pwd:/src ca
 
 ### Publish Optimized Binaries
 
-You can optimize cold start for your lambda function by publishing your csproj with the `--runtime linux-x64` build flag.
+You can optimize cold start for your lambda function by publishing your project as optimized runtime binaries:
+
+You will need to modify your csproj file to give optimization instructions to the dotnet compiler. Add these lines to your top `<PropertyGroup>`:
+
+```xml
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <PublishReadyToRun>true</PublishReadyToRun>
+```
+
+Publish the project with the `--runtime linux-x64` build flag:  
 
 ```powershell
 dotnet publish --configuration "Release" --runtime linux-x64 --self-contained false
