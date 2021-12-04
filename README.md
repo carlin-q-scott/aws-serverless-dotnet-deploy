@@ -24,7 +24,7 @@ docker run -it --name amazon -v $HOME/.aws:/root/.aws -v $(pwd):/src carlin/aws-
 Windows Powershell:
 
 ```powershell
-docker run -it --name amazon -v $env:USERPROFILE/.aws:/root/.aws -v $pwd:/src carlin/aws-serverless-dotnet-deploy bash
+docker run -it --name amazon -v $env:USERPROFILE/.aws:/root/.aws -v $pwd/:/src carlin/aws-serverless-dotnet-deploy bash
 ```
 
 ### Publish Optimized Binaries

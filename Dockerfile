@@ -14,3 +14,6 @@ RUN dotnet tool install -g --no-cache Amazon.Lambda.Tools --version 5.2.0
 
 # install AWS SAM CLI
 RUN pip3 install awscli==1.22.19 aws-sam-cli==1.36.0 --upgrade --no-cache-dir
+
+WORKDIR /src
+CMD [ "serverless", "--help" ]
